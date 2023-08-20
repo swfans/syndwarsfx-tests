@@ -59,8 +59,15 @@ def test_play_empty_packet_files(pckt_inp_fn):
         os.makedirs(logs_out_path)
     # Run the game
     command = [os.path.join(".", "swars"), "-W", "-q", "-m", "{},{}".format(campgn,missi), "-p", "{}".format(pcktno)]
+    if False: # Debug
+        command = ["c:/msys64/mingw32/bin/gdb", "-q", "-ex", "set env DEBUG_BF_AUDIO 1", "-ex", "set pagination off", "-ex", "set logging overwrite on", "-ex", "set logging on", "-ex", "run", "-ex", "exit", "--args"] + command
+        gdblog_out_fn = os.sep.join([logs_out_path, "{:s}-gdb.log".format(pckt_basename)])
     LOGGER.info(' '.join(command))
-    subprocess.run(command)
+    proc = subprocess.run(command, capture_output=True, text=True)
+    LOGGER.info(proc.stdout)
     os.replace("error.log", logs_out_fn)
+    if False: # Debug
+        os.replace("gdb.txt", gdblog_out_fn)
+    assert proc.returncode == 0, "Game precess exited with code {}".format(proc.returncode)
     log = open(logs_out_fn, "r").read()
     assert "LbDataFree" in log, "Log file does not contain cleanup, execution did not ended normally"
