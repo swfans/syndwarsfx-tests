@@ -58,7 +58,7 @@ def test_play_empty_packet_files(pckt_inp_fn):
     if not os.path.exists(logs_out_path):
         os.makedirs(logs_out_path)
     # Run the game
-    command = [os.path.join(".", "swars"), "-W", "-q", "-m", "{},{}".format(campgn,missi), "-p", "{}".format(pcktno)]
+    command = [os.path.join(".", "syndwarsfx"), "-W", "-q", "-m", "{},{}".format(campgn,missi), "-p", "{}".format(pcktno)]
     if False: # Debug
         command = ["c:/msys64/mingw32/bin/gdb", "-q", "-ex", "set env DEBUG_BF_AUDIO 1", "-ex", "set pagination off", "-ex", "set logging overwrite on", "-ex", "set logging on", "-ex", "run", "-ex", "exit", "--args"] + command
         gdblog_out_fn = os.sep.join([logs_out_path, "{:s}-gdb.log".format(pckt_basename)])
